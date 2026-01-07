@@ -1,0 +1,76 @@
+{
+  "manifest_version": 3,
+  "name": "EchoNate - Intelligent Navigation Assistant",
+  "version": "2.0.0",
+  "description": "Advanced browser automation and navigation assistance for complex web workflows",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "cookies",
+    "webRequest",
+    "webNavigation",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background/echonate-core.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "content/navigation-assistant.js",
+        "content/form-optimizer.js",
+        "content/challenge-handler.js",
+        "content/session-manager.js",
+        "content/privacy-enhancer.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "inject/page-context.js",
+        "inject/fingerprint-normalizer.js",
+        "inject/timing-optimizer.js",
+        "credentials/*.json"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup/dashboard.html",
+    "default_title": "EchoNate Navigation Assistant"
+  },
+  "options_page": "options/settings.html",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  },
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_privacy",
+        "enabled": true,
+        "path": "rules/privacy-protection.json"
+      },
+      {
+        "id": "ruleset_optimization",
+        "enabled": false,
+        "path": "rules/request-optimization.json"
+      }
+    ]
+  }
+}

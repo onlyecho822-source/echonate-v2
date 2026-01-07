@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoNate Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            width: 400px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .header .version {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .status {
+            background: white;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .status-item:last-child {
+            border-bottom: none;
+        }
+        
+        .status-label {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .status-value {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .mode-selector {
+            background: white;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .mode-selector h3 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .mode-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .mode-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .mode-btn:hover {
+            border-color: #667eea;
+        }
+        
+        .mode-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .mode-btn.standard.active {
+            background: #4CAF50;
+            border-color: #4CAF50;
+        }
+        
+        .mode-btn.advanced.active {
+            background: #FF9800;
+            border-color: #FF9800;
+        }
+        
+        .mode-btn.research.active {
+            background: #F44336;
+            border-color: #F44336;
+        }
+        
+        .safety-level {
+            background: white;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .safety-level h3 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .safety-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .safety-badge.LOW {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+        
+        .safety-badge.MEDIUM {
+            background: #FFF3E0;
+            color: #E65100;
+        }
+        
+        .safety-badge.HIGH {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+        
+        .actions {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background: #667eea;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .action-btn:hover {
+            background: #5568d3;
+        }
+        
+        .action-btn.secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+        
+        .action-btn.secondary:hover {
+            background: #d0d0d0;
+        }
+        
+        .terms-notice {
+            background: #FFF3CD;
+            border: 1px solid #FFC107;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #856404;
+        }
+        
+        .terms-notice strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 11px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🌐 EchoNate</h1>
+        <div class="version">Intelligent Navigation Assistant v2.0</div>
+    </div>
+    
+    <div id="terms-notice" class="terms-notice" style="display: none;">
+        <strong>⚠️ Terms of Service Required</strong>
+        Please review and accept the Terms of Service to use EchoNate.
+        <button class="action-btn" onclick="showTerms()" style="margin-top: 10px; width: 100%;">
+            Review Terms
+        </button>
+    </div>
+    
+    <div id="main-content" style="display: none;">
+        <div class="status">
+            <div class="status-item">
+                <span class="status-label">Status</span>
+                <span class="status-value" id="status">Active</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Current Mode</span>
+                <span class="status-value" id="current-mode">Standard</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Actions Logged</span>
+                <span class="status-value" id="audit-count">0</span>
+            </div>
+        </div>
+        
+        <div class="mode-selector">
+            <h3>Operational Mode</h3>
+            <div class="mode-buttons">
+                <button class="mode-btn standard active" data-mode="standard">
+                    Standard
+                </button>
+                <button class="mode-btn advanced" data-mode="advanced">
+                    Advanced
+                </button>
+                <button class="mode-btn research" data-mode="research">
+                    Research
+                </button>
+            </div>
+        </div>
+        
+        <div class="safety-level">
+            <h3>Safety Level</h3>
+            <span class="safety-badge LOW" id="safety-level">LOW</span>
+        </div>
+        
+        <div class="actions">
+            <button class="action-btn" onclick="openSettings()">
+                ⚙️ Settings
+            </button>
+            <button class="action-btn secondary" onclick="exportAudit()">
+                📊 Export Audit Log
+            </button>
+            <button class="action-btn secondary" onclick="viewTerms()">
+                📄 View Terms of Service
+            </button>
+        </div>
+    </div>
+    
+    <div class="footer">
+        EchoNate v2.0 | Use Responsibly and Legally
+    </div>
+    
+    <script src="dashboard.js"></script>
+</body>
+</html>
